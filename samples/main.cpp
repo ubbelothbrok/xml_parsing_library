@@ -2,6 +2,10 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
+#include "../include/xml_parser.h"
+
+#include <filesystem>
 
 int main(int argc, char* argv[]) {
     // Let's make sure the user provided a file!
@@ -18,18 +22,37 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    std::cout << "Awesome, I found your file! Here is what's inside:\n";
-    std::cout << "--------------------------------------------------\n";
+    // Read the entire file content into a string stream
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    std::string xml_content = buffer.str();
+    file.close();
 
-    // Read and print the file line by line
-    std::string line;
-    while (std::getline(file, line)) {
-        std::cout << line << "\n";
+    try {
+        XMLNode root = XMLParser::parse(xml_content);
+        std::string structured_text = XMLParser::format(root);
+
+        // Define output directory and output path
+        std::filesystem::path input_path(argv[1]);
+        std::string filename = input_path.filename().string();
+        std::filesystem::path output_dir = "xml_outputs";
+        std::filesystem::create_directories(output_dir);
+        std::filesystem::path output_path = output_dir / (filename + ".structured");
+
+        // Write the structured form to the output file
+        std::ofstream outfile(output_path);
+        if (!outfile.is_open()) {
+            std::cout << "Uh oh, I couldn't create the output file '" << output_path.string() << "'\n";
+            return 1;
+        }
+        outfile << structured_text;
+        outfile.close();
+
+        std::cout << structured_text;
+    } catch (const std::exception& e) {
+        std::cerr << "Error parsing XML: " << e.what() << "\n";
+        return 1;
     }
 
-    std::cout << "--------------------------------------------------\n";
-    std::cout << "All done! Hope that helps.\n";
-
-    file.close();
     return 0;
 }

@@ -10,11 +10,13 @@ project(xml_parsing
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # 4. Define the executable target and its source files
 
 add_library(xml_parsing 
     src/utils.cpp
+    src/xml_parser.cpp
 )
 
 option(BUILD_SAMPLES "Build sample applications" ON)

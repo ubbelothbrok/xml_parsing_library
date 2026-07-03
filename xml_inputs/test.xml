@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- GlobalTech Corporate Structure - Snapshot 2026-07-03 -->
+<?xml-stylesheet type="text/xsl" href="company-stylesheet.xsl"?>
+
+<Company xmlns="http://globaltech.example.com/ns/organization"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://globaltech.example.com/ns/organization https://globaltech.example.com/schemas/organization.xsd"
+         name="GlobalTech Inc."
+         founded="1998-04-12"
+         ceo="Dr. Elena V. Rodriguez"
+         stockTicker="GTEC">
+
+    <!-- Headquarters information -->
+    <Headquarters location="New York, USA">
+        <Address>
+            <Street>100 Tech Park Drive</Street>
+            <City>New York</City>
+            <State>NY</State>
+            <ZipCode>10001-2345</ZipCode>
+            <Country>USA</Country>
+        </Address>
+        <Contact>
+            <Phone type="main">+1-212-555-0199</Phone>
+            <Email>info@globaltech.com</Email>
+            <Website>https://www.globaltech.com</Website>
+        </Contact>
+    </Headquarters>
+
+    <!-- Departments -->
+    <Departments>
+        <Department id="D001" name="Research & Development" budget="12.5M" head="Dr. Arjun Mehta">
+            <Description>
+                <![CDATA[Responsible for cutting-edge AI, machine learning, and next-generation cloud infrastructure.
+                Core focus areas include: natural language processing, computer vision, and distributed systems.]]>
+            </Description>
+            <Projects>
+                <Project id="P101" name="Project Nova" status="active" priority="high" startDate="2025-10-01" endDate="2026-12-31">
+                    <Team>
+                        <Member ref="E001" role="Lead Architect"/>
+                        <Member ref="E003" role="Senior Engineer"/>
+                        <Member ref="E007" role="ML Researcher"/>
+                    </Team>
+                    <Deliverables>
+                        <Deliverable id="DL101" name="Alpha prototype" deadline="2026-03-15" status="delivered"/>
+                        <Deliverable id="DL102" name="Beta release" deadline="2026-08-30" status="in-progress"/>
+                    </Deliverables>
+                </Project>
+                <Project id="P102" name="Quantum Secure" status="planning" priority="medium" startDate="2026-04-01" endDate="2027-09-30">
+                    <Team>
+                        <Member ref="E002" role="Project Manager"/>
+                        <Member ref="E008" role="Cryptographer"/>
+                    </Team>
+                </Project>
+            </Projects>
+        </Department>
+
+        <Department id="D002" name="Sales & Marketing" budget="8.3M" head="Ms. Karen Liu">
+            <Description>
+                Oversees global sales strategy, brand management, and customer acquisition.
+            </Description>
+            <Regions>
+                <Region name="North America">
+                    <Office>New York</Office>
+                    <Office>San Francisco</Office>
+                    <Office>Toronto</Office>
+                </Region>
+                <Region name="EMEA">
+                    <Office>London</Office>
+                    <Office>Berlin</Office>
+                    <Office>Dubai</Office>
+                </Region>
+                <Region name="APAC">
+                    <Office>Singapore</Office>
+                    <Office>Tokyo</Office>
+                    <Office>Sydney</Office>
+                </Region>
+            </Regions>
+        </Department>
+
+        <Department id="D003" name="Operations & IT" budget="6.7M" head="Mr. James O'Brien">
+            <Description>
+                Manages internal IT infrastructure, DevOps, security, and facilities.
+            </Description>
+            <Infrastructure>
+                <DataCenter location="Virginia" capacity="5MW" provider="Equinix"/>
+                <DataCenter location="Ireland" capacity="3.2MW" provider="Interxion"/>
+                <CloudProvider name="AWS" accountId="123456789012" region="us-east-1"/>
+                <CloudProvider name="Azure" accountId="987654321098" region="west-europe"/>
+            </Infrastructure>
+        </Department>
+    </Departments>
+
+    <!-- Employees -->
+    <Employees>
+        <Employee id="E001" firstName="Arjun" lastName="Mehta" hired="2015-08-19" status="active">
+            <Contact>
+                <Email>arjun.mehta@globaltech.com</Email>
+                <Phone>+1-212-555-0123</Phone>
+            </Contact>
+            <Skills>
+                <Skill name="Python" level="expert"/>
+                <Skill name="Java" level="advanced"/>
+                <Skill name="Kubernetes" level="intermediate"/>
+                <Skill name="Machine Learning" level="expert"/>
+            </Skills>
+            <DepartmentRef ref="D001"/>
+        </Employee>
+
+        <Employee id="E002" firstName="Sarah" lastName="Chen" hired="2018-02-01" status="active">
+            <Contact>
+                <Email>sarah.chen@globaltech.com</Email>
+                <Phone>+44-20-7946-0999</Phone>
+            </Contact>
+            <Skills>
+                <Skill name="Project Management" level="expert"/>
+                <Skill name="Agile" level="expert"/>
+                <Skill name="Risk Analysis" level="advanced"/>
+            </Skills>
+            <DepartmentRef ref="D001"/>  <!-- Actually in R&D as PM -->
+        </Employee>
+
+        <Employee id="E003" firstName="Elena" lastName="V. Rodriguez" hired="2005-06-10" status="active">
+            <Contact>
+                <Email>elena.rodriguez@globaltech.com</Email>
+                <Phone>+1-212-555-0001</Phone>
+            </Contact>
+            <Skills>
+                <Skill name="Leadership" level="expert"/>
+                <Skill name="Strategic Planning" level="expert"/>
+                <Skill name="Finance" level="advanced"/>
+            </Skills>
+            <DepartmentRef ref="D001"/>  <!-- CEO also listed in R&D for honorary -->
+        </Employee>
+
+        <Employee id="E007" firstName="Priya" lastName="Patel" hired="2020-11-03" status="active">
+            <Contact>
+                <Email>priya.patel@globaltech.com</Email>
+                <Phone>+1-212-555-0456</Phone>
+            </Contact>
+            <Skills>
+                <Skill name="TensorFlow" level="expert"/>
+                <Skill name="PyTorch" level="advanced"/>
+                <Skill name="C++" level="intermediate"/>
+            </Skills>
+            <DepartmentRef ref="D001"/>
+        </Employee>
+
+        <Employee id="E008" firstName="Mohammed" lastName="Al-Farsi" hired="2022-07-15" status="active">
+            <Contact>
+                <Email>mohammed.alfarsi@globaltech.com</Email>
+                <Phone>+971-4-555-6789</Phone>
+            </Contact>
+            <Skills>
+                <Skill name="Cryptography" level="expert"/>
+                <Skill name="Rust" level="advanced"/>
+                <Skill name="Go" level="intermediate"/>
+            </Skills>
+            <DepartmentRef ref="D001"/>
+        </Employee>
+    </Employees>
+
+    <!-- Financial metadata -->
+    <Financials year="2026" currency="USD">
+        <Revenue>985.4M</Revenue>
+        <Expenses>
+            <Category name="R&D">187.2M</Category>
+            <Category name="Sales & Marketing">95.6M</Category>
+            <Category name="Operations">72.3M</Category>
+            <Category name="Administrative">43.1M</Category>
+        </Expenses>
+        <NetIncome>587.2M</NetIncome>
+    </Financials>
+
+    <!-- Audit trail (for XML complexity) -->
+    <AuditTrail>
+        <Entry timestamp="2026-07-03T10:15:00Z" user="system" action="snapshot_generated"/>
+        <Entry timestamp="2026-07-03T10:20:00Z" user="admin_jdoe" action="reviewed" comments="All departments verified"/>
+    </AuditTrail>
+
+    <!-- Empty element with attributes (just for demonstration) -->
+    <VersionControl system="Git" branch="main" commitHash="a1b2c3d4e5f6"/>
+</Company>

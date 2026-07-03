@@ -10,11 +10,18 @@
 
 
 
-#run commands
-mkdir -p build
-cd build
-cmake .. 
+# Run Commands
 
-cmake --build .
+Configure and build the project using CMake:
+```bash
+# Configure the build directory
+cmake -B build
 
-./my_app ../test.xml
+# Build the project
+cmake --build build
+```
+
+Run the application with a sample XML file:
+```bash
+./build/my_app xml_inputs/test.xml
+```

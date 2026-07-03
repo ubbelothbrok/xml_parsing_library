@@ -1,0 +1,109 @@
+- Company
+  - Headquarters
+    - Address
+      - Street: 100 Tech Park Drive
+      - City: New York
+      - State: NY
+      - ZipCode: 10001-2345
+      - Country: USA
+    - Contact
+      - Phone: +1-212-555-0199
+      - Email: info@globaltech.com
+      - Website: https://www.globaltech.com
+  - Departments
+    - Department
+      - Description
+      - Projects
+        - Project
+          - Team
+            - Member
+            - Member
+            - Member
+          - Deliverables
+            - Deliverable
+            - Deliverable
+        - Project
+          - Team
+            - Member
+            - Member
+    - Department
+      - Description: Oversees global sales strategy, brand management, and customer acquisition.
+      - Regions
+        - Region
+          - Office: New York
+          - Office: San Francisco
+          - Office: Toronto
+        - Region
+          - Office: London
+          - Office: Berlin
+          - Office: Dubai
+        - Region
+          - Office: Singapore
+          - Office: Tokyo
+          - Office: Sydney
+    - Department
+      - Description: Manages internal IT infrastructure, DevOps, security, and facilities.
+      - Infrastructure
+        - DataCenter
+        - DataCenter
+        - CloudProvider
+        - CloudProvider
+  - Employees
+    - Employee
+      - Contact
+        - Email: arjun.mehta@globaltech.com
+        - Phone: +1-212-555-0123
+      - Skills
+        - Skill
+        - Skill
+        - Skill
+        - Skill
+      - DepartmentRef
+    - Employee
+      - Contact
+        - Email: sarah.chen@globaltech.com
+        - Phone: +44-20-7946-0999
+      - Skills
+        - Skill
+        - Skill
+        - Skill
+      - DepartmentRef
+    - Employee
+      - Contact
+        - Email: elena.rodriguez@globaltech.com
+        - Phone: +1-212-555-0001
+      - Skills
+        - Skill
+        - Skill
+        - Skill
+      - DepartmentRef
+    - Employee
+      - Contact
+        - Email: priya.patel@globaltech.com
+        - Phone: +1-212-555-0456
+      - Skills
+        - Skill
+        - Skill
+        - Skill
+      - DepartmentRef
+    - Employee
+      - Contact
+        - Email: mohammed.alfarsi@globaltech.com
+        - Phone: +971-4-555-6789
+      - Skills
+        - Skill
+        - Skill
+        - Skill
+      - DepartmentRef
+  - Financials
+    - Revenue: 985.4M
+    - Expenses
+      - Category: 187.2M
+      - Category: 95.6M
+      - Category: 72.3M
+      - Category: 43.1M
+    - NetIncome: 587.2M
+  - AuditTrail
+    - Entry
+    - Entry
+  - VersionControl
