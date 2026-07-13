@@ -1,27 +1,19 @@
 - Company
-  - Headquarters
-    - Address
-      - Street: 100 Tech Park Drive
-      - City: New York
-      - State: NY
-      - ZipCode: 10001-2345
-      - Country: USA
-    - Contact
-      - Phone: +1-212-555-0199
-      - Email: info@globaltech.com
-      - Website: https://www.globaltech.com
+  - AuditTrail
+    - Entry
+    - Entry
   - Departments
     - Department
       - Description
       - Projects
         - Project
+          - Deliverables
+            - Deliverable
+            - Deliverable
           - Team
             - Member
             - Member
             - Member
-          - Deliverables
-            - Deliverable
-            - Deliverable
         - Project
           - Team
             - Member
@@ -44,66 +36,74 @@
     - Department
       - Description: Manages internal IT infrastructure, DevOps, security, and facilities.
       - Infrastructure
-        - DataCenter
-        - DataCenter
         - CloudProvider
         - CloudProvider
+        - DataCenter
+        - DataCenter
   - Employees
     - Employee
       - Contact
         - Email: arjun.mehta@globaltech.com
         - Phone: +1-212-555-0123
+      - DepartmentRef
       - Skills
         - Skill
         - Skill
         - Skill
         - Skill
-      - DepartmentRef
     - Employee
       - Contact
         - Email: sarah.chen@globaltech.com
         - Phone: +44-20-7946-0999
+      - DepartmentRef
       - Skills
         - Skill
         - Skill
         - Skill
-      - DepartmentRef
     - Employee
       - Contact
         - Email: elena.rodriguez@globaltech.com
         - Phone: +1-212-555-0001
+      - DepartmentRef
       - Skills
         - Skill
         - Skill
         - Skill
-      - DepartmentRef
     - Employee
       - Contact
         - Email: priya.patel@globaltech.com
         - Phone: +1-212-555-0456
+      - DepartmentRef
       - Skills
         - Skill
         - Skill
         - Skill
-      - DepartmentRef
     - Employee
       - Contact
         - Email: mohammed.alfarsi@globaltech.com
         - Phone: +971-4-555-6789
+      - DepartmentRef
       - Skills
         - Skill
         - Skill
         - Skill
-      - DepartmentRef
   - Financials
-    - Revenue: 985.4M
     - Expenses
       - Category: 187.2M
       - Category: 95.6M
       - Category: 72.3M
       - Category: 43.1M
     - NetIncome: 587.2M
-  - AuditTrail
-    - Entry
-    - Entry
+    - Revenue: 985.4M
+  - Headquarters
+    - Address
+      - City: New York
+      - Country: USA
+      - State: NY
+      - Street: 100 Tech Park Drive
+      - ZipCode: 10001-2345
+    - Contact
+      - Email: info@globaltech.com
+      - Phone: +1-212-555-0199
+      - Website: https://www.globaltech.com
   - VersionControl

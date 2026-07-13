@@ -4,7 +4,8 @@
 #include <algorithm>
 #include <cctype>
 
-// A helper to trim whitespace
+// Strips leading and trailing whitespace from a string.
+// Handy for cleaning up text content pulled out of between XML tags.
 static std::string trim(const std::string& str) {
     size_t first = str.find_first_not_of(" \t\r\n");
     if (first == std::string::npos) return "";
@@ -13,64 +14,80 @@ static std::string trim(const std::string& str) {
 }
 
 XMLNode XMLParser::parse(const std::string& xml_content) {
+    // We use a stack to keep track of tags we've opened but haven't closed yet.
+    // Think of it like a pile — when we see <Tag>, we push it on.
+    // When we see </Tag>, we pop it off and attach it to its parent.
     std::vector<XMLNode> stack;
     size_t pos = 0;
-    
+
     while (pos < xml_content.length()) {
+        // Jump ahead to the next '<' — that's where the action is
         pos = xml_content.find('<', pos);
         if (pos == std::string::npos) {
-            break;
+            break;  // no more tags, we're done
         }
-        
-        // Check if it's a comment or declaration (e.g., <?xml ... ?> or <!-- ... -->)
+
+        // Skip over XML declarations (<?xml ...?>) and comments (<!-- ... -->)
+        // — we don't need those for building the tree
         if (pos + 1 < xml_content.length() && (xml_content[pos + 1] == '?' || xml_content[pos + 1] == '!')) {
             size_t end_pos = xml_content.find('>', pos);
             if (end_pos == std::string::npos) {
-                throw std::runtime_error("Malformed XML: unclosed comment or declaration");
+                throw std::runtime_error("Hmm, this XML looks broken — found an unclosed comment or declaration.");
             }
             pos = end_pos + 1;
             continue;
         }
-        
+
+        // Find where this tag closes
         size_t close_bracket = xml_content.find('>', pos);
         if (close_bracket == std::string::npos) {
-            throw std::runtime_error("Malformed XML: unclosed tag");
+            throw std::runtime_error("Hmm, this XML looks broken — found a tag that was never closed with '>'.");
         }
-        
+
         std::string tag_content = xml_content.substr(pos + 1, close_bracket - pos - 1);
-        
+
         if (tag_content.empty()) {
-            throw std::runtime_error("Malformed XML: empty tag");
+            throw std::runtime_error("Hmm, this XML looks broken — found an empty '<>' tag with nothing inside.");
         }
-        
+
         if (tag_content[0] == '/') {
-            // Close tag
+            // ── Closing tag (e.g. </Employee>) ──────────────────────────────
             std::string tag_name = trim(tag_content.substr(1));
+
             if (stack.empty()) {
-                throw std::runtime_error("Malformed XML: closing tag '" + tag_name + "' without open tag");
+                throw std::runtime_error("Hmm, this XML looks broken — found a closing tag </" + tag_name + "> but nothing was open.");
             }
-            
+
+            // Pop the top of the stack — this node is complete!
             XMLNode finished_node = stack.back();
             stack.pop_back();
-            
+
             if (finished_node.name != tag_name) {
-                throw std::runtime_error("Malformed XML: mismatched tag. Expected '" + finished_node.name + "' but got '" + tag_name + "'");
+                throw std::runtime_error(
+                    "Hmm, the tags don't match up — expected </" + finished_node.name +
+                    "> but found </" + tag_name + ">."
+                );
             }
-            
+
             if (stack.empty()) {
+                // That was the root node — we're done!
                 return finished_node;
             } else {
+                // Attach it to its parent and keep going
                 stack.back().children.push_back(finished_node);
             }
             pos = close_bracket + 1;
+
         } else {
-            // Open tag or self-closing tag
+            // ── Opening tag or self-closing tag (e.g. <Employee> or <Member />) ──
             bool self_closing = false;
             if (tag_content.back() == '/') {
+                // Self-closing tags like <Member /> don't need a matching </Member>
                 self_closing = true;
                 tag_content.pop_back();
             }
-            
+
+            // Pull out just the tag name (everything before the first space or attribute)
             std::string tag_name;
             size_t space_pos = tag_content.find(' ');
             if (space_pos == std::string::npos) {
@@ -78,11 +95,12 @@ XMLNode XMLParser::parse(const std::string& xml_content) {
             } else {
                 tag_name = trim(tag_content.substr(0, space_pos));
             }
-            
+
             XMLNode new_node;
             new_node.name = tag_name;
-            
+
             if (self_closing) {
+                // Self-closing nodes are leaf nodes — no children, no waiting
                 if (stack.empty()) {
                     return new_node;
                 } else {
@@ -90,6 +108,7 @@ XMLNode XMLParser::parse(const std::string& xml_content) {
                 }
                 pos = close_bracket + 1;
             } else {
+                // Peek at the text sitting between this tag and the next one
                 size_t next_bracket = xml_content.find('<', close_bracket + 1);
                 std::string text_content;
                 if (next_bracket != std::string::npos) {
@@ -98,21 +117,25 @@ XMLNode XMLParser::parse(const std::string& xml_content) {
                     text_content = trim(xml_content.substr(close_bracket + 1));
                 }
                 new_node.text = text_content;
-                
+
+                // Push it onto the stack and wait for its closing tag
                 stack.push_back(new_node);
                 pos = close_bracket + 1;
             }
         }
     }
-    
+
+    // If anything is still on the stack, someone forgot to close a tag
     if (!stack.empty()) {
-        throw std::runtime_error("Malformed XML: unclosed tag '" + stack.back().name + "'");
+        throw std::runtime_error("Hmm, this XML looks broken — the tag <" + stack.back().name + "> was never closed.");
     }
-    
-    throw std::runtime_error("Empty or invalid XML document");
+
+    throw std::runtime_error("This doesn't look like a valid XML document — couldn't find any tags.");
 }
 
 std::string XMLParser::format(const XMLNode& node, int indent) {
+    // Each node gets a "- TagName" line, optionally followed by its value.
+    // Children are indented by two extra spaces to show nesting.
     std::string result = std::string(indent, ' ') + "- " + node.name;
     if (!node.text.empty()) {
         result += ": " + node.text;
