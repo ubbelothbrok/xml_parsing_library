@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <algorithm>
 #include <cctype>
+#include <vector>
 
 // Strips leading and trailing whitespace from a string.
 // Handy for cleaning up text content pulled out of between XML tags.
@@ -12,7 +13,7 @@ static std::string trim(const std::string& str) {
     size_t last = str.find_last_not_of(" \t\r\n");
     return str.substr(first, (last - first + 1));
 }
-
+#ifdef OLD
 XMLNode XMLParser::parse(const std::string& xml_content) {
     // We use a stack to keep track of tags we've opened but haven't closed yet.
     // Think of it like a pile — when we see <Tag>, we push it on.
@@ -65,8 +66,7 @@ XMLNode XMLParser::parse(const std::string& xml_content) {
             if (finished_node.name != tag_name) {
                 throw std::runtime_error(
                     "Hmm, the tags don't match up — expected </" + finished_node.name +
-                    "> but found </" + tag_name + ">."
-                );
+                    "> but found </" + tag_name + ">.");
             }
 
             if (stack.empty()) {
@@ -146,3 +146,104 @@ std::string XMLParser::format(const XMLNode& node, int indent) {
     }
     return result;
 }
+
+#else
+
+static int _skip_whitespace(const std::string& str, int idx) {
+    int len = str.length();
+    while (idx < len) {
+        if (str[idx] == ' ')
+            idx++;
+        else
+            break;
+    }
+    return idx;
+}
+
+static int _next_symbol(const std::string& str, int idx, char c) {
+    int len = str.length();
+    while (idx < len) {
+        if (str[idx] != c)
+            idx++;
+        else
+            break;
+    }
+    return idx;
+}
+
+
+typedef enum {
+    INIT,
+    TAG,
+    ATTR,
+    DECENT,
+    CLOSE,
+    FINISH,
+    ERROR
+} parse_stage_t;
+
+bool is_valid_tag_name(const std::string& str, int s, int e) {
+  // first index inclusive and second exclusive
+    for (int i = s; i < e && i < str.length(); i++) {
+        char c = str[i];
+        if (i == s) {
+            if (!((c >= 'a' && c <= 'z') ||
+                  (c >= 'A' && c <= 'Z') ||
+                  c == '_')) {
+                return false;
+            }
+            continue;
+        }
+
+
+        if (!((c >= 'a' && c <= 'z') ||
+              (c >= 'A' && c <= 'Z') ||
+              (c >= '0' && c <= 9) ||
+              c == '.' || c == '_' || c == '-')) {
+            return false;
+        }
+    }
+    return true;
+}
+
+static XMLNode* decent_parse(const std::string& xml_content, int& index, parse_stage_t& status, std::vector<XMLNode*>& stack) {
+    if (index >= xml_content.length()) {
+        status = FINISH;
+    }
+    switch (status) {
+    case INIT:
+        int n;
+        n = _next_symbol(xml_content, index, '<');
+        if (n >= xml_content.length()) return NULL;
+        index = ++n;
+        index = _skip_whitespace(xml_content, index);
+        if (index >= xml_content.length()) return NULL;
+
+    case TAG:
+        break;
+    case ATTR:
+        break;
+    case DECENT:
+        break;
+    case CLOSE:
+        break;
+    case ERROR:
+        break;
+    case FINISH:
+        break;
+    default:
+        throw std::runtime_error("Invalid state at parsing");
+        break;
+    }
+}
+
+
+XMLNode* XMLParser::parse(const std::string& xml_content) {
+    parse_stage_t status = INIT;
+    std::vector<XMLNode*> stack;
+    int idx = 0;
+    return decent_parse(xml_content, idx, status, stack);
+}
+
+std::string XMLParser::format(const XMLNode& node, int indent) { return ""; }
+#endif // !OLD

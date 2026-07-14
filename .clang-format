@@ -1,0 +1,72 @@
+# Style used across the XML parser project.
+# clangd picks this up automatically; `clang-format -i <file>` applies it by hand.
+#
+# This codebase is hand-wrapped and hand-aligned on purpose (aligned declarations,
+# deliberately broken parameter lists, comment banners drawn with box characters).
+# So this config is deliberately NON-invasive: ColumnLimit is 0, which means
+# clang-format will never re-wrap or re-join a line. It only normalizes
+# indentation, spacing and braces, and leaves your line breaks alone.
+---
+Language: Cpp
+BasedOnStyle: LLVM
+
+# Never re-wrap. This is the setting that keeps the formatter from fighting
+# the hand-formatted layout — remove it and you get a repo-wide reflow.
+ColumnLimit: 0
+
+# Indentation: 4 spaces, no tabs. `public:` / `private:` sit flush with `class`.
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+AccessModifierOffset: -4
+NamespaceIndentation: None
+IndentCaseLabels: false
+
+# `const std::string& str`, not `const std::string &str`.
+PointerAlignment: Left
+ReferenceAlignment: Left
+DerivePointerAlignment: false
+
+# Braces on the same line as the thing they open.
+BreakBeforeBraces: Attach
+
+# Leave short constructs the way they were written, e.g.
+#   if (first == std::string::npos) return "";
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortFunctionsOnASingleLine: All
+AllowShortLoopsOnASingleLine: true
+AllowShortBlocksOnASingleLine: Always
+# NOTE: this has no effect while ColumnLimit is 0 — clang-format ignores it and
+# always breaks an enum one-per-line. It is set here so the intent survives if
+# ColumnLimit is ever raised. The one casualty today is include/utils.h, whose
+# `enum log_level_t { ERROR, WARN, INFO };` will expand across three lines.
+# If you want it kept on one line, wrap it in // clang-format off / on.
+AllowShortEnumsOnASingleLine: true
+
+# Both alignment options are deliberately None. clang-format has no "leave it as
+# the author wrote it" mode for alignment — it is force-align or nothing — and
+# turning either on INVENTS alignment where nobody asked for it:
+#   AlignConsecutiveDeclarations -> pads params: `const XMLNode&                node,`
+#   AlignConsecutiveAssignments  -> pads locals: `std::string filename        = ...`
+# The cost of None is that the hand-aligned `bool do_sort   = false;` block in
+# samples/main.cpp gets normalized once. That is the cheaper trade.
+AlignConsecutiveAssignments: None
+AlignConsecutiveDeclarations: None
+AlignTrailingComments:
+  Kind: Leave
+  OverEmptyLines: 0
+
+# The comment banners use box-drawing characters; reflowing mangles them.
+ReflowComments: false
+
+# Keep the include order the files already use. This matters: samples/main.cpp
+# has #includes inside #if defined(XML_SORTER_AVAILABLE) guards, and reordering
+# them would break the optional-module scheme.
+SortIncludes: false
+IncludeBlocks: Preserve
+
+SpaceBeforeParens: ControlStatements
+Cpp11BracedListStyle: true
+FixNamespaceComments: true
+KeepEmptyLinesAtTheStartOfBlocks: true
+MaxEmptyLinesToKeep: 2

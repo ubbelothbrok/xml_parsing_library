@@ -20,31 +20,38 @@ set(CORE_SOURCES
 
 # 5. Optional: sorting module — included only if the file exists.
 #    Removing xml_sorter.cpp / xml_sorter.h will NOT break the core library.
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/xml_sorter.cpp")
-    list(APPEND CORE_SOURCES src/xml_sorter.cpp)
-    add_compile_definitions(XML_SORTER_AVAILABLE)
-    message(STATUS "xml_sorter module found — sorting feature enabled")
-else()
-    message(STATUS "xml_sorter module not found — sorting feature disabled")
-endif()
-
-# 6. Optional: search module — included only if the file exists.
-#    Removing xml_searcher.cpp / xml_searcher.h will NOT break the core library.
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/xml_searcher.cpp")
-    list(APPEND CORE_SOURCES src/xml_searcher.cpp)
-    add_compile_definitions(XML_SEARCHER_AVAILABLE)
-    message(STATUS "xml_searcher module found — search feature enabled")
-else()
-    message(STATUS "xml_searcher module not found — search feature disabled")
-endif()
-
+# if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/xml_sorter.cpp")
+#    list(APPEND CORE_SOURCES src/xml_sorter.cpp)
+##    add_compile_definitions(XML_SORTER_AVAILABLE)
+##    message(STATUS "xml_sorter module found — sorting feature enabled")
+##else()
+##    message(STATUS "xml_sorter module not found — sorting feature disabled")
+##endif()
+##
+### 6. Optional: search module — included only if the file exists.
+###    Removing xml_searcher.cpp / xml_searcher.h will NOT break the core library.
+##if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/xml_searcher.cpp")
+##    list(APPEND CORE_SOURCES src/xml_searcher.cpp)
+##    add_compile_definitions(XML_SEARCHER_AVAILABLE)
+##    message(STATUS "xml_searcher module found — search feature enabled")
+##else()
+##    message(STATUS "xml_searcher module not found — search feature disabled")
+##endif()
+#
 add_library(xml_parsing ${CORE_SOURCES})
 
 option(BUILD_SAMPLES "Build sample applications" ON)
 
-if(BUILD_SAMPLES)
-    add_executable(my_app 
-        samples/main.cpp
+# if(BUILD_SAMPLES)
+#    add_executable(my_app 
+#        samples/main.cpp
+#    )
+#    target_link_libraries(my_app xml_parsing)
+# endif()
+
+if(TESTS)
+    add_executable(test 
+        samples/test.cpp
     )
-    target_link_libraries(my_app xml_parsing)
+    target_link_libraries(test xml_parsing)
 endif()
